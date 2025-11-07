@@ -30,7 +30,8 @@ export class TelegramBot implements TelegramBotEventHandlers {
     first_name: 'Bot',
   };
 
-  private messageHandles: ((update: Update) => void)[] = [];
+  private messageHandles: Handle[] = [];
+  private useMessageHandles: UseHandle<Update>[] = [];
   private entityHandles: EntityHandles = {
     bot_command: new Commands(),
     mention: new Mentions(),
@@ -135,7 +136,7 @@ export class TelegramBot implements TelegramBotEventHandlers {
    * });
    */
   onMessage(cb: Handle<Update>) {
-    this.messageHandles.push(data => cb(data, this.api));
+    this.messageHandles.push(cb);
   }
 
   /**
@@ -149,6 +150,36 @@ export class TelegramBot implements TelegramBotEventHandlers {
    */
   offMessage(cb: Handle<Update>) {
     this.messageHandles = this.messageHandles.filter(c => c !== cb);
+  }
+
+  /**
+   * Регистрирует промежуточный обработчик для входящих сообщений
+   * Промежуточные обработчики выполняются ДО основных обработчиков сообщений и команд
+   * и могут прервать цепочку обработки, вернув true
+   * @param cb - Функция-обработчик, которая будет вызвана для каждого обновления
+   * @returns true для прерывания цепочки обработки, false для продолжения
+   * @example
+   * // Проверка прав доступа пользователя
+   * bot.onUseMessage((update, api) => {
+   *   if (!isUserAllowed(update.message?.from.id)) {
+   *     api.sendMessage({
+   *       chat_id: update.message.chat.id,
+   *       text: 'Доступ запрещен'
+   *     });
+   *     return true; // Прерываем выполнение последующих обработчиков
+   *   }
+   *   return false; // Продолжаем обработку
+   * });
+   *
+   * @example
+   * // Логирование всех входящих сообщений
+   * bot.onUseMessage((update) => {
+   *   console.log('Received update:', update.update_id);
+   *   return false; // Продолжаем обработку
+   * });
+   */
+  onUseMessage(cb: UseHandle<Update>) {
+    this.useMessageHandles.push(cb);
   }
 
   /**
@@ -241,6 +272,12 @@ export class TelegramBot implements TelegramBotEventHandlers {
    */
   private handleMessage = (update: Update) => {
     try {
+      for (const cb of this.useMessageHandles) {
+        if (cb(update, this.api)) {
+          return;
+        }
+      }
+
       // Определяем тип сущности в сообщении и уведомляем соответствующий обработчик
       const messageType = getTelegramUpdateType(update);
       if (messageType) {
@@ -248,7 +285,7 @@ export class TelegramBot implements TelegramBotEventHandlers {
       }
 
       // Вызываем все зарегистрированные обработчики сообщений
-      this.messageHandles.forEach(cb => cb(update));
+      this.messageHandles.forEach(cb => cb(update, this.api));
     } catch {
       console.warn('Unhandled error in handleMessage');
     }
