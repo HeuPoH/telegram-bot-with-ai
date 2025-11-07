@@ -22,6 +22,7 @@ type EntityHandles = { [K in MessageEntity['type']]?: GenericObservable };
  * Реализует паттерн наблюдателя для различных типов сущностей сообщений
  */
 export class TelegramBot implements TelegramBotEventHandlers {
+  private botStartedAt = 0;
   private api: ITelegramApi;
   private connectionManager: ConnectionManager;
   private botInfo: User = {
@@ -234,6 +235,7 @@ export class TelegramBot implements TelegramBotEventHandlers {
    * console.log('Бот запущен');
    */
   start() {
+    this.botStartedAt = Date.now();
     this.connectionManager.getConnection().start();
   }
 
@@ -272,6 +274,11 @@ export class TelegramBot implements TelegramBotEventHandlers {
    */
   private handleMessage = (update: Update) => {
     try {
+      // игнорирование сообщений, который были отправлены до запуска бота
+      if (update.message && update.message.date * 1000 < this.botStartedAt) {
+        return;
+      }
+
       for (const cb of this.useMessageHandles) {
         if (cb(update, this.api)) {
           return;

@@ -20,7 +20,6 @@ config({ path: '../.env' });
   const bot = await TelegramBot.create(process.env.TELEGRAM_BOT_API!, [
     'message',
     'inline_query',
-    'poll_answer',
   ]);
   const aiBotsManager = new AIBotsManager(bot);
 
