@@ -1,3 +1,4 @@
+import type { ChatMember } from './bot-types/chat-member.ts';
 import type { DeleteMessage } from './bot-types/delete-message.ts';
 import type { DeleteMessages } from './bot-types/delete-messages.ts';
 import type { GetUpdatesOptions } from './bot-types/get-update-options.ts';
@@ -13,6 +14,7 @@ export interface ITelegramApi {
   stopPoll(data: StopPoll): Promise<SuccessResponse>;
   deleteMessage(data: DeleteMessage): Promise<SuccessResponse>;
   deleteMessages(data: DeleteMessages): Promise<SuccessResponse>;
+  getChatMember(data: ChatMember): Promise<SuccessResponse>;
   sendMessage(data: SendMessage): Promise<SuccessResponse>;
   getMe(): Promise<User>;
   getUpdates(

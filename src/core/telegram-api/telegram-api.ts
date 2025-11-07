@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import type { ChatMember } from './bot-types/chat-member.ts';
 import type { DeleteMessage } from './bot-types/delete-message.ts';
 import type { DeleteMessages } from './bot-types/delete-messages.ts';
 import type { GetUpdatesOptions } from './bot-types/get-update-options.ts';
@@ -163,6 +164,10 @@ export class TelegramApi implements ITelegramApi {
 
       throw new Error('Unknown error');
     }
+  }
+
+  getChatMember(data: ChatMember) {
+    return this.makeRequest(this.buildUrl('getChatMember'), data);
   }
 
   /**
