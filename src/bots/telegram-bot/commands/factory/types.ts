@@ -10,7 +10,9 @@ export type Command =
   | 'help'
   | 'start_ai'
   | 'stop_ai'
-  | 'reset_ais';
+  | 'reset_ais'
+  | 'emotional_damage_on'
+  | 'emotional_damage_off';
 
 type Description = {
   format: string;

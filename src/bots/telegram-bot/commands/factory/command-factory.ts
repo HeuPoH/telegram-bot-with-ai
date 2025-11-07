@@ -5,6 +5,8 @@ import { resetAIs } from '../ai/reset-ai.ts';
 import { startAI } from '../ai/start-ai.ts';
 import { stopAI } from '../ai/stop-ai.ts';
 import { deleteMessage } from '../delete-message.ts';
+import { emotionalDamageOff } from '../emotional-damage/emotional-damage-off.ts';
+import { emotionalDamageOn } from '../emotional-damage/emotional-damage-on.ts';
 import { help } from '../help.ts';
 import { duplicatePoll } from '../poll-commands/duplicate-poll.ts';
 import { queryPoll } from '../poll-commands/query-poll.ts';
@@ -18,6 +20,9 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     label: 'Запустить AI бота',
     type: '/start_ai',
     handle: (data, reply) => startAI(data, reply, aiBotsManager),
+    description: () => ({
+      format: '/start_ai',
+    }),
   });
 
   factory.register('/reset_ais', {
@@ -30,6 +35,9 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     label: 'Остановить бота',
     type: '/stop_ai',
     handle: (data, reply) => stopAI(data, reply, aiBotsManager),
+    description: () => ({
+      format: '/stop_ai',
+    }),
   });
 
   factory.register('/query_poll', {
@@ -49,7 +57,7 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     handle: stopPoll,
     description: () => ({
       format: '/stop_poll',
-      more: '<u>Требование:</u>\nответить на сообщение с опросом',
+      more: '<u>Требование:</u>\nОтветить на сообщение с опросом',
     }),
   });
 
@@ -62,7 +70,7 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
         '/duplicate_poll (можно добавить "Новое название" "Новый вариант 1" ...)',
       examples:
         '/duplicate_poll \n/duplicate_poll "Новый опрос" \n/duplicate_poll "Новый" "Вариант 1" "Вариант 2"',
-      more: '<u>Требование:</u>\nответить на сообщение с опросом',
+      more: '<u>Требование:</u>\nОтветить на сообщение с опросом',
     }),
   });
 
@@ -72,7 +80,27 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     handle: deleteMessage,
     description: () => ({
       format: '/delete_message',
-      more: '<u>Требование:</u> \n 1. бот должен иметь права на удаление сообщений \n 2. ответить на сообщение для удаления',
+      more: '<u>Требование:</u>\n1. бот должен иметь права на удаление сообщений \n2. ответить на сообщение для удаления',
+    }),
+  });
+
+  factory.register('/emotional_damage_on', {
+    label: 'Забанить',
+    type: '/emotional_damage_on',
+    handle: emotionalDamageOn,
+    description: () => ({
+      format: '/emotional_damage_on (можно добавить "duration")',
+      more: '<u>Требование:</u>\nОтветить на сообщение пользователя для бана',
+    }),
+  });
+
+  factory.register('/emotional_damage_off', {
+    label: 'Разбанить',
+    type: '/emotional_damage_off',
+    handle: emotionalDamageOff,
+    description: () => ({
+      format: '/emotional_damage_off',
+      more: '<u>Требование:</u>\nОтветить на сообщение пользователя для разбана',
     }),
   });
 

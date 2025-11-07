@@ -7,8 +7,8 @@ export async function resetAIs(
   reply: Reply,
   aiBotsManager: AIBotsManager,
 ) {
-  const { chat, from } = data.message ?? {};
-  if (!from || !chat) {
+  const chat = data.message?.chat;
+  if (!chat) {
     return;
   }
 
@@ -16,7 +16,7 @@ export async function resetAIs(
     aiBotsManager.resetBots();
     await reply.sendMessage({
       chat_id: chat.id,
-      text: 'Все боты сброшены',
+      text: 'ПУШИСТЫЙ РЕБУТ АКТИВИРОВАН! 🚀',
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {

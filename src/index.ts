@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { config } from 'dotenv';
 
 import { AIBotsManager } from './bots/ai/ai-bot-manager.ts';
+import { applyEmotionalDamage } from './bots/telegram-bot/apply-emotional-damage.ts';
 import { registerCommands } from './bots/telegram-bot/commands/factory/command-factory.ts';
 import {
   setCommands,
@@ -29,6 +30,7 @@ config({ path: '../.env' });
 
   setUseMention(bot);
 
+  bot.onUseMessage(applyEmotionalDamage);
   bot.onMessage(onNewChatMemeber(bot.getBotInfo().id));
 
   bot.start();
