@@ -1,10 +1,10 @@
 import { Factory } from '~/services/factory/index.ts';
 
 import type { BaseAIBot } from '../base-ai-bot.ts';
-import { PollCreatorBot } from '../bot-entities/poll-creator-bot.ts';
+import { FuzzyGunnerBot } from '../bot-entities/fuzzy-gunner-bot.ts';
 import type { BotContext } from './types.ts';
 
-export type BotType = 'poll-creator';
+export type BotType = 'fuzzy-gunner';
 
 type FactoryItem = {
   label: string;
@@ -14,10 +14,10 @@ type FactoryItem = {
 
 const factory = new Factory<FactoryItem>();
 
-factory.register('poll-creator', {
+factory.register('fuzzy-gunner', {
   label: 'Poll creator',
-  type: 'poll-creator',
-  createBot: (context: BotContext) => new PollCreatorBot(context),
+  type: 'fuzzy-gunner',
+  createBot: (context: BotContext) => new FuzzyGunnerBot(context),
 });
 
 export { factory };

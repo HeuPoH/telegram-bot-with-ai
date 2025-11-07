@@ -29,7 +29,7 @@ export async function startAI(
     aiBotsManager.startBot(`${chat.id}`, {
       apiKey: process.env.MISTRAL_API_KEY!,
       model: 'magistral-small-2509',
-      botType: 'poll-creator',
+      botType: 'fuzzy-gunner',
     });
     await reply.sendMessage({
       chat_id: chat.id,
