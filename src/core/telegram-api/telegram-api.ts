@@ -5,6 +5,7 @@ import type { DeleteMessage } from './bot-types/delete-message.ts';
 import type { DeleteMessages } from './bot-types/delete-messages.ts';
 import type { GetUpdatesOptions } from './bot-types/get-update-options.ts';
 import type { Response, SuccessResponse } from './bot-types/response.ts';
+import type { SendAnimation } from './bot-types/send-animation.ts';
 import type { SendMessage } from './bot-types/send-message.ts';
 import type { SendPoll } from './bot-types/send-poll.ts';
 import type { StopPoll } from './bot-types/stop-poll.ts';
@@ -44,6 +45,32 @@ export class TelegramApi implements ITelegramApi {
       abortSignal,
     );
     return response?.result as Update[];
+  }
+
+  /**
+   * Отправляет анимацию (GIF или видео без звука)
+   * @param data - Объект с данными для отправки анимации
+   * @returns Promise с результатом отправки
+   * @throws {CustomTelegramResponseError} Если API Telegram вернуло ошибку
+   * @example
+   * // Отправка анимации по file_id
+   * await api.sendAnimation({
+   *   chat_id: 12345,
+   *   animation: 'CgACAgQAAxkBAAMOZJ...'
+   * });
+   *
+   * @example
+   * // Отправка анимации по URL с дополнительными параметрами
+   * await api.sendAnimation({
+   *   chat_id: 12345,
+   *   animation: 'https://example.com/animation.gif',
+   *   duration: 5,
+   *   width: 320,
+   *   height: 240
+   * });
+   */
+  sendAnimation(data: SendAnimation): Promise<SuccessResponse> {
+    return this.makeRequest(this.buildUrl('sendAnimation'), data);
   }
 
   /**
