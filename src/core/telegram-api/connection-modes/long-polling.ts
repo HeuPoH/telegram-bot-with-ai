@@ -41,6 +41,7 @@ export class LongPolling implements BotConnection {
           error instanceof CustomTelegramResponseError &&
           shouldStopPermanently(error.getStatus())
         ) {
+          console.log(error.message);
           this.stop();
           break;
         }
@@ -97,8 +98,10 @@ export class LongPolling implements BotConnection {
         this.offset = update.update_id + 1;
         this.handler(update);
       }
-    } catch {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error('poll got error');
+      throw error;
     }
   }
 }
