@@ -4,7 +4,7 @@ import type { Ban } from './types.ts';
  * Менеджер для управления временными блокировками пользователей
  * Предоставляет методы для добавления, удаления и проверки блокировок с автоматическим учетом времени истечения
  */
-class BansManager {
+export class BansManager {
   private bans = new Map<number, Ban>();
 
   /**
@@ -88,5 +88,3 @@ class BansManager {
     return this.checkUserBan(userId) ? this.bans.get(userId) : undefined;
   }
 }
-
-export const bansManager = new BansManager();

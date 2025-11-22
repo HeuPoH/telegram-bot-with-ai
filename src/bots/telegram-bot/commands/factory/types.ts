@@ -12,7 +12,8 @@ export type Command =
   | 'stop_ai'
   | 'reset_ais'
   | 'emotional_damage_on'
-  | 'emotional_damage_off';
+  | 'emotional_damage_off'
+  | 'hello_kitty';
 
 type Description = {
   format: string;

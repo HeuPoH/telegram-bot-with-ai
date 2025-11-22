@@ -1,4 +1,4 @@
-import { bansManager } from '~/core/moderation/bans-manager.ts';
+import { bansManager } from '~/core/app-store.ts';
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { Update } from '~/core/telegram-api/bot-types/update.ts';
 

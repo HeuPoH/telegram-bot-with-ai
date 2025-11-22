@@ -7,6 +7,7 @@ import { stopAI } from '../ai/stop-ai.ts';
 import { deleteMessage } from '../delete-message.ts';
 import { emotionalDamageOff } from '../emotional-damage/emotional-damage-off.ts';
 import { emotionalDamageOn } from '../emotional-damage/emotional-damage-on.ts';
+import { helloKitty } from '../hello-kitty.ts';
 import { help } from '../help.ts';
 import { duplicatePoll } from '../poll-commands/duplicate-poll.ts';
 import { queryPoll } from '../poll-commands/query-poll.ts';
@@ -108,6 +109,12 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     label: 'Справка',
     type: '/help',
     handle: (data, reply) => help(data, reply, factory),
+  });
+
+  factory.register('/hello_kitty', {
+    label: 'Массовый бан',
+    type: '/hello_kitty',
+    handle: helloKitty,
   });
 }
 
