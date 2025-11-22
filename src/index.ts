@@ -17,7 +17,13 @@ config({ path: '../.env' });
 
 // eslint-disable-next-line unicorn/prefer-top-level-await
 (async () => {
-  const bot = await TelegramBot.create(process.env.TELEGRAM_BOT_API!, [
+  const telegramBotApi = process.env.TELEGRAM_BOT_API;
+  if (!telegramBotApi) {
+    console.log('Telegram token is not found');
+    return;
+  }
+
+  const bot = await TelegramBot.create(telegramBotApi, [
     'message',
     'inline_query',
   ]);
