@@ -10,11 +10,12 @@ import type {
   Handle,
   UseHandle,
 } from './observers/generic-observable.ts';
-import { MENTION_KEY, Mentions } from './observers/mention.ts';
+import { BOT_MENTION_KEY, Mentions } from './observers/mention.ts';
 import { TelegramApi } from './telegram-api.ts';
 import type { ITelegramApi } from './telegram-api-service.ts';
 
-type EntityHandles = { [K in MessageEntity['type']]?: GenericObservable };
+type MessageType = MessageEntity['type'] | typeof BOT_MENTION_KEY;
+type EntityHandles = { [K in MessageType]?: GenericObservable };
 
 /**
  * Основной класс для работы с Telegram Bot API
@@ -35,7 +36,7 @@ export class TelegramBot implements TelegramBotEventHandlers {
   private useMessageHandles: UseHandle<Update>[] = [];
   private entityHandles: EntityHandles = {
     bot_command: new Commands(),
-    mention: new Mentions(),
+    bot_mention: new Mentions(),
   };
 
   /**
@@ -199,7 +200,7 @@ export class TelegramBot implements TelegramBotEventHandlers {
    * });
    */
   onUseMention(cb: UseHandle<Update>) {
-    this.entityHandles.mention?.use(cb);
+    this.entityHandles.bot_mention?.use(cb);
   }
 
   /**
@@ -211,7 +212,7 @@ export class TelegramBot implements TelegramBotEventHandlers {
    * });
    */
   onMention(cb: Handle<Update>) {
-    this.entityHandles.mention?.register(MENTION_KEY, cb);
+    this.entityHandles.bot_mention?.register(BOT_MENTION_KEY, cb);
   }
 
   /**
@@ -224,7 +225,7 @@ export class TelegramBot implements TelegramBotEventHandlers {
    * bot.offMention(handler);
    */
   offMention(cb: Handle<Update>) {
-    this.entityHandles.mention?.unregister(MENTION_KEY, cb);
+    this.entityHandles.bot_mention?.unregister(BOT_MENTION_KEY, cb);
   }
 
   /**
@@ -286,7 +287,7 @@ export class TelegramBot implements TelegramBotEventHandlers {
       }
 
       // Определяем тип сущности в сообщении и уведомляем соответствующий обработчик
-      const messageType = getTelegramUpdateType(update);
+      const messageType = getTelegramUpdateType(update, this.botInfo);
       if (messageType) {
         this.entityHandles[messageType]?.notify(update, this.api);
       }
@@ -305,6 +306,25 @@ export class TelegramBot implements TelegramBotEventHandlers {
  * @param update - Обновление от Telegram API
  * @returns Тип сущности (bot_command, mention и т.д.) или undefined если сущность не найдена
  */
-function getTelegramUpdateType(update: Update) {
-  return update.message ? update.message.entities?.[0]?.type : undefined;
+function getTelegramUpdateType(update: Update, botInfo: User) {
+  const message = update.message;
+  if (!message) {
+    return;
+  }
+
+  const messageEntity = message.entities?.[0];
+  const type = messageEntity?.type;
+  if (!type) {
+    return;
+  }
+
+  if (type === 'mention') {
+    const { offset, length } = messageEntity;
+    const userMentioned = message.text!.slice(offset + 1, length);
+    if (userMentioned === botInfo.username) {
+      return BOT_MENTION_KEY;
+    }
+  }
+
+  return type;
 }

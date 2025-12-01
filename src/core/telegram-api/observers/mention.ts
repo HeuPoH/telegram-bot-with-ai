@@ -2,7 +2,7 @@ import type { Reply } from '../bot-types/reply.ts';
 import type { Update } from '../bot-types/update.ts';
 import { GenericObservable } from './generic-observable.ts';
 
-export const MENTION_KEY = 'mention';
+export const BOT_MENTION_KEY = 'bot_mention';
 
 export class Mentions extends GenericObservable<Update> {
   notify(update: Update, reply: Reply) {
@@ -10,6 +10,6 @@ export class Mentions extends GenericObservable<Update> {
       return;
     }
 
-    this.notifyImpl(MENTION_KEY, update, reply);
+    this.notifyImpl(BOT_MENTION_KEY, update, reply);
   }
 }
