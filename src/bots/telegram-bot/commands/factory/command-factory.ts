@@ -41,46 +41,44 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     }),
   });
 
-  factory.register('/query_poll', {
+  factory.register('/q_poll', {
     label: 'Создать опрос',
-    type: '/query_poll',
+    type: '/q_poll',
     handle: queryPoll,
     description: () => ({
-      format:
-        '/query_poll "Название опроса" "Вариант 1" "Вариант 2" "Вариант 2"',
-      examples: '/query_poll "Лучший язык?" "Python" "JavaScript" "Rust"',
+      format: '/q_poll "Название опроса" "Вариант 1" "Вариант 2" "Вариант 2"',
+      examples: '/q_poll "Лучший язык?" "Python" "JavaScript" "Rust"',
     }),
   });
 
-  factory.register('/stop_poll', {
+  factory.register('/s_poll', {
     label: 'Закрыть опрос',
-    type: '/stop_poll',
+    type: '/s_poll',
     handle: stopPoll,
     description: () => ({
-      format: '/stop_poll',
+      format: '/s_poll',
       more: '<u>Требование:</u>\nОтветить на сообщение с опросом',
     }),
   });
 
-  factory.register('/duplicate_poll', {
+  factory.register('/d_poll', {
     label: 'Дублировать опрос',
-    type: '/duplicate_poll',
+    type: '/d_poll',
     handle: duplicatePoll,
     description: () => ({
-      format:
-        '/duplicate_poll (можно добавить "Новое название" "Новый вариант 1" ...)',
+      format: '/d_poll (можно добавить "Новое название" "Новый вариант 1" ...)',
       examples:
-        '/duplicate_poll \n/duplicate_poll "Новый опрос" \n/duplicate_poll "Новый" "Вариант 1" "Вариант 2"',
+        '/d_poll \n/d_poll "Новый опрос" \n/d_poll "Новый" "Вариант 1" "Вариант 2"',
       more: '<u>Требование:</u>\nОтветить на сообщение с опросом',
     }),
   });
 
-  factory.register('/delete_message', {
+  factory.register('/d_message', {
     label: 'Удаление сообщения',
-    type: '/delete_message',
+    type: '/d_message',
     handle: deleteMessage,
     description: () => ({
-      format: '/delete_message',
+      format: '/d_message',
       more: '<u>Требование:</u>\n1. бот должен иметь права на удаление сообщений \n2. ответить на сообщение для удаления',
     }),
   });

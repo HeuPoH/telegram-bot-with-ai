@@ -3,10 +3,10 @@ import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
 import type { IFactory } from '~/services/factory/index.ts';
 
 export type Command =
-  | 'query_poll'
-  | 'stop_poll'
-  | 'delete_message'
-  | 'duplicate_poll'
+  | 'q_poll'
+  | 's_poll'
+  | 'd_message'
+  | 'd_poll'
   | 'help'
   | 'start_ai'
   | 'stop_ai'
