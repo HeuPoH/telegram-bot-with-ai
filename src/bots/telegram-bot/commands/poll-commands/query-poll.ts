@@ -16,11 +16,12 @@ export async function queryPoll(data: CommandData, reply: Reply) {
       return;
     }
 
+    const is_anonymous = data.command_flags.a === true;
     await reply.sendPoll({
       chat_id,
       question: poll.question!,
       options: poll.options!.map(text => ({ text })),
-      is_anonymous: false,
+      is_anonymous,
     });
   } catch (error: unknown) {
     console.error('Failed to create poll:', error);

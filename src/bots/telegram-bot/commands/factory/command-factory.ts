@@ -46,8 +46,18 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     type: '/q_poll',
     handle: queryPoll,
     description: () => ({
-      format: '/q_poll "Название опроса" "Вариант 1" "Вариант 2" "Вариант 2"',
-      examples: '/q_poll "Лучший язык?" "Python" "JavaScript" "Rust"',
+      format:
+        '/q_poll [-a] "Название опроса" "Вариант 1" "Вариант 2" "Вариант 3"',
+      examples: [
+        '/q_poll "Лучший язык?" "Python" "JavaScript" "Rust"',
+        '/q_poll -a "Анонимный опрос" "Да" "Нет" "Возможно"',
+      ],
+      flags: [
+        [
+          '-a',
+          'Сделать опрос анонимным (без отображения имен проголосовавших)',
+        ],
+      ],
     }),
   });
 
@@ -67,8 +77,11 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     handle: duplicatePoll,
     description: () => ({
       format: '/d_poll (можно добавить "Новое название" "Новый вариант 1" ...)',
-      examples:
-        '/d_poll \n/d_poll "Новый опрос" \n/d_poll "Новый" "Вариант 1" "Вариант 2"',
+      examples: [
+        '/d_poll',
+        '/d_poll "Новый опрос"',
+        '/d_poll "Новый" "Вариант 1" "Вариант 2"',
+      ],
       more: '<u>Требование:</u>\nОтветить на сообщение с опросом',
     }),
   });

@@ -17,8 +17,9 @@ export type Command =
 
 type Description = {
   format: string;
-  examples?: string;
+  examples?: string[];
   more?: string;
+  flags?: string[][];
 };
 
 export type CommandsFactoryItem = {

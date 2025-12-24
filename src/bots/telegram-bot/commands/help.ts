@@ -31,14 +31,20 @@ function makeHelp(factory: ICommandsFactory) {
       continue;
     }
 
-    const { format, examples, more } = description();
+    const { format, examples, more, flags } = description();
     const html: string[] = [
       `<b>Команда</b>: <code>${command.type}</code> - ${command.label}`,
       `<b>Формат</b>: <code>${format}</code>`,
     ];
 
+    if (flags) {
+      html.push(
+        `<b>Флаги:</b>\n<code>${flags.map(flag => `${flag[0]} - ${flag[1]}`).join('\n')}</code>`,
+      );
+    }
+
     if (examples) {
-      html.push(`<b>Примеры:</b>\n<code>${examples}</code>`);
+      html.push(`<b>Примеры:</b>\n<code>${examples.join('\n')}</code>`);
     }
 
     if (more) {
