@@ -40,8 +40,18 @@ export class FuzzyGunnerBot implements BaseAIBot {
     try {
       const res = await this.context.sendMessage({ messages: history });
       if (res) {
-        this.handleBotResponse(res, message_id, reply, chat.id);
+        const message = await this.handleBotResponse(
+          res,
+          message_id,
+          reply,
+          chat.id,
+        );
+        if (message) {
+          history.push({ role: 'assistant', content: message });
+        }
       }
+
+      this.history = history;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       this.sendMessage(reply, message_id, chat.id, error.message);
@@ -60,9 +70,8 @@ export class FuzzyGunnerBot implements BaseAIBot {
     }
 
     try {
-      const { text, question, options } = parseBotResponse(
-        (content as { text: string }).text,
-      );
+      const typedContent = content as { text: string };
+      const { text, question, options } = parseBotResponse(typedContent.text);
 
       await this.sendMessage(reply, messageId, chatId, text);
 
@@ -74,8 +83,14 @@ export class FuzzyGunnerBot implements BaseAIBot {
           is_anonymous: false,
         });
       }
+
+      return typedContent.text;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      reply.sendMessage({
+        chat_id: chatId,
+        text: 'Произошли неизвестная ошибка...',
+      });
       console.warn(error);
     }
   }
