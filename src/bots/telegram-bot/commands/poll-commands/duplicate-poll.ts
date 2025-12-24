@@ -20,6 +20,11 @@ export async function duplicatePoll(data: CommandData, reply: Reply) {
     const pollOptions = parsePollOptions(data.command_args);
     const sendPollData = createPollData(originalPoll, pollOptions, id);
 
+    await reply.deleteMessage({
+      chat_id: id,
+      message_id: data.message.message_id,
+    });
+
     await reply.sendPoll(sendPollData);
   } catch (error) {
     console.error('Failed to duplicate poll:', error);

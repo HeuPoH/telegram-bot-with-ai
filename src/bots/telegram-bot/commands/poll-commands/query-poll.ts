@@ -16,6 +16,11 @@ export async function queryPoll(data: CommandData, reply: Reply) {
       return;
     }
 
+    await reply.deleteMessage({
+      chat_id,
+      message_id: data.message.message_id,
+    });
+
     const is_anonymous = data.command_flags.a === true;
     await reply.sendPoll({
       chat_id,

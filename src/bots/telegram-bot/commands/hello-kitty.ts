@@ -21,6 +21,12 @@ export async function helloKitty(data: CommandData, reply: Reply) {
 
   try {
     const chatId = message.chat.id;
+
+    await reply.deleteMessage({
+      chat_id: chatId,
+      message_id: data.message.message_id,
+    });
+
     await reply.sendAnimation({
       chat_id: chatId,
       animation: kitty_say_hi,
