@@ -7,6 +7,7 @@ import type { GetUpdatesOptions } from './bot-types/get-update-options.ts';
 import type { Response, SuccessResponse } from './bot-types/response.ts';
 import type { SendAnimation } from './bot-types/send-animation.ts';
 import type { SendMessage } from './bot-types/send-message.ts';
+import type { SendPhoto } from './bot-types/send-photo.ts';
 import type { SendPoll } from './bot-types/send-poll.ts';
 import type { SendSticker } from './bot-types/send-sticker.ts';
 import type { StopPoll } from './bot-types/stop-poll.ts';
@@ -122,6 +123,10 @@ export class TelegramApi implements ITelegramApi {
    */
   sendMessage(data: SendMessage) {
     return this.makeRequest(this.buildUrl('sendMessage'), data);
+  }
+
+  sendPhoto(data: SendPhoto): Promise<SuccessResponse> {
+    return this.makeRequest(this.buildUrl('sendPhoto'), data);
   }
 
   /**

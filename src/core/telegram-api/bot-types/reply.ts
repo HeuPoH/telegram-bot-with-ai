@@ -10,4 +10,5 @@ export type Reply = Pick<
   | 'getChatMember'
   | 'sendAnimation'
   | 'sendSticker'
+  | 'sendPhoto'
 >;
