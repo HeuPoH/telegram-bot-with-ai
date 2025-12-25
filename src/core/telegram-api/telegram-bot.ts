@@ -263,8 +263,29 @@ export class TelegramBot implements TelegramBotEventHandlers {
     return this.connectionManager.getConnection().isRunning();
   }
 
+  /**
+   * Возвращает информацию о боте
+   * @returns Объект с данными о боте (ID, имя, username и т.д.)
+   * @example
+   * const botInfo = bot.getBotInfo();
+   * console.log(`Bot ID: ${botInfo.id}, Username: @${botInfo.username}`);
+   */
   getBotInfo() {
     return this.botInfo;
+  }
+
+  /**
+   * Возвращает API интерфейс для взаимодействия с Telegram Bot API
+   * @returns Экземпляр интерфейса ITelegramApi для отправки запросов к API
+   * @example
+   * const api = bot.getApi();
+   * await api.sendMessage({
+   *   chat_id: 123456789,
+   *   text: 'Привет!'
+   * });
+   */
+  getApi() {
+    return this.api;
   }
 
   /**
