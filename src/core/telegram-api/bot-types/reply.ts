@@ -9,4 +9,5 @@ export type Reply = Pick<
   | 'getMe'
   | 'getChatMember'
   | 'sendAnimation'
+  | 'sendSticker'
 >;
