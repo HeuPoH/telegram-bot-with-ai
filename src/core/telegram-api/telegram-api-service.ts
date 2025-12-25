@@ -6,12 +6,14 @@ import type { SuccessResponse } from './bot-types/response.ts';
 import type { SendAnimation } from './bot-types/send-animation.ts';
 import type { SendMessage } from './bot-types/send-message.ts';
 import type { SendPoll } from './bot-types/send-poll.ts';
+import type { SendSticker } from './bot-types/send-sticker.ts';
 import type { StopPoll } from './bot-types/stop-poll.ts';
 import type { Update } from './bot-types/update.ts';
 import type { User } from './bot-types/user.ts';
 
 export interface ITelegramApi {
   sendAnimation(data: SendAnimation): Promise<SuccessResponse>;
+  sendSticker(data: SendSticker): Promise<SuccessResponse>;
   sendPoll(data: SendPoll): Promise<SuccessResponse>;
   stopPoll(data: StopPoll): Promise<SuccessResponse>;
   deleteMessage(data: DeleteMessage): Promise<SuccessResponse>;

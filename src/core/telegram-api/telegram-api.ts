@@ -8,6 +8,7 @@ import type { Response, SuccessResponse } from './bot-types/response.ts';
 import type { SendAnimation } from './bot-types/send-animation.ts';
 import type { SendMessage } from './bot-types/send-message.ts';
 import type { SendPoll } from './bot-types/send-poll.ts';
+import type { SendSticker } from './bot-types/send-sticker.ts';
 import type { StopPoll } from './bot-types/stop-poll.ts';
 import type { Update } from './bot-types/update.ts';
 import type { User } from './bot-types/user.ts';
@@ -71,6 +72,41 @@ export class TelegramApi implements ITelegramApi {
    */
   sendAnimation(data: SendAnimation): Promise<SuccessResponse> {
     return this.makeRequest(this.buildUrl('sendAnimation'), data);
+  }
+
+  /**
+   * Отправляет стикер
+   * @param data - Объект с данными для отправки стикера
+   * @returns Promise с результатом отправки
+   * @throws {CustomTelegramResponseError} Если API Telegram вернуло ошибку
+   * @example
+   * // Отправка стикера по file_id
+   * await api.sendSticker({
+   *   chat_id: 12345,
+   *   sticker: 'CAACAgIAAxkBAAMOZJ...'
+   * });
+   *
+   * @example
+   * // Отправка стикера по URL с эмодзи
+   * await api.sendSticker({
+   *   chat_id: 12345,
+   *   sticker: 'https://example.com/sticker.webp',
+   *   emoji: '😀'
+   * });
+   *
+   * @example
+   * // Отправка стикера с параметрами ответа
+   * await api.sendSticker({
+   *   chat_id: 12345,
+   *   sticker: 'CAACAgIAAxkBAAMOZJ...',
+   *   reply_parameters: {
+   *     message_id: 456,
+   *     chat_id: 12345
+   *   }
+   * });
+   */
+  sendSticker(data: SendSticker): Promise<SuccessResponse> {
+    return this.makeRequest(this.buildUrl('sendSticker'), data);
   }
 
   /**
