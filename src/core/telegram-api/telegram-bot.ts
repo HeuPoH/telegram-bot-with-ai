@@ -52,7 +52,9 @@ export class TelegramBot implements TelegramBotEventHandlers {
     botInfo?: User,
   ) {
     const bot = new TelegramBot(token, updateTypes);
-    if (!botInfo) {
+    if (botInfo) {
+      bot.setBotInfo(botInfo);
+    } else {
       await bot.init();
     }
     return bot;
