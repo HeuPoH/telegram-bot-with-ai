@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { writeFileSync, existsSync, mkdirSync } from 'node:fs';
-=======
-import { existsSync, mkdirSync, copyFileSync } from 'node:fs';
->>>>>>> origin
+import { existsSync, mkdirSync, copyFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -14,10 +10,15 @@ try {
     mkdirSync(path.join(__dirname, 'dist'));
   }
 
-  const envPath = path.join(__dirname, '.env');
-  const distEnvPath = path.join(__dirname, 'dist', '.env');
-  if (existsSync(envPath)) {
-    copyFileSync(envPath, distEnvPath);
+  writeFileSync(path.join(__dirname, 'dist', 'users-storage.json'), '{}');
+  writeFileSync(path.join(__dirname, 'dist', 'new-year-settings.json'), '{}');
+  console.log('✅ Файл users.txt успешно создан');
+  console.log('✅ Файл new-year-settings.json успешно создан');
+
+  const environmentPath = path.join(__dirname, '.env');
+  const distributionEnvironmentPath = path.join(__dirname, 'dist', '.env');
+  if (existsSync(environmentPath)) {
+    copyFileSync(environmentPath, distributionEnvironmentPath);
     console.log('✅ Файл .env скопирован в dist');
   } else {
     console.log('⚠️  Файл .env не найден, создайте его вручную');
