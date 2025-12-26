@@ -10,9 +10,18 @@ export function applyNewYear(update: Update, reply: Reply) {
     return false;
   }
 
-  const userId = message.from?.id;
+  const from = message.from;
+  if (!from) {
+    return false;
+  }
+
+  const userId = from.id;
   if (!userId) {
     return false;
+  }
+
+  if (from.is_bot) {
+    return true;
   }
 
   const chat_id = message.chat.id;
@@ -26,10 +35,12 @@ export function applyNewYear(update: Update, reply: Reply) {
     return false;
   }
 
-  reply
-    .deleteMessage({
-      chat_id,
-      message_id: message.message_id,
+  Promise.resolve()
+    .then(() => {
+      return reply.deleteMessage({
+        chat_id,
+        message_id: message.message_id,
+      });
     })
     .then(async () => {
       const userAvatars = await UsersStorage.getInstance();
@@ -40,7 +51,9 @@ export function applyNewYear(update: Update, reply: Reply) {
       const userAvatar = userAvatars.getUserAvatar(userId);
       return strategyReply(message, userAvatar.getApi());
     })
-    .catch(() => {});
+    .catch(error => {
+      console.error(`Aplly new year throw error: ${error}`);
+    });
 
   return true;
 }
