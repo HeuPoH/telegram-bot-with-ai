@@ -10,8 +10,8 @@ export async function emotionalDamageOn(data: CommandData, reply: Reply) {
     return;
   }
 
+  const chat_id = message.chat.id;
   try {
-    const chat_id = message.chat.id;
     const reply_message = message.reply_to_message;
     if (!reply_message) {
       return sendNegativeResult(
@@ -48,5 +48,6 @@ export async function emotionalDamageOn(data: CommandData, reply: Reply) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error(error);
+    sendNegativeResult(reply, chat_id, 'Ошибка при запсуке Emotional damage');
   }
 }
