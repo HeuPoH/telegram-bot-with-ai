@@ -58,7 +58,7 @@ export function applyNewYear(update: Update, reply: Reply) {
       return strategyReply(message, userAvatar.getApi());
     })
     .catch(error => {
-      console.error(`Apply new year throw error: ${error}`);
+      console.error(`"apply_new_year" throw error: ${error}`);
     });
 
   return true;

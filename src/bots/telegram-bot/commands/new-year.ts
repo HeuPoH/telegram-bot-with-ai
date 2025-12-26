@@ -55,7 +55,7 @@ export async function newYear(data: CommandData, reply: Reply) {
       }
     }
   } catch (error: any) {
-    console.error(`new_year command throw exception ${error.message}`);
+    console.error(`"new_year" finished with error: ${error.message}`);
     sendNegativeResult(reply, chatId, 'Произошла ошибка при запуске режима new_year');
   }
 }

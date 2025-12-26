@@ -92,7 +92,7 @@ function makeAuthorName(from?: User) {
 }
 
 function makeMessageShorter(text: string) {
-  return text.length > 30 ? text.slice(0, 30) + '...' : text;
+  return text.length > 50 ? text.slice(0, 50) + '...' : text;
 }
 
 function sendAnimation(message: Message, reply: Reply) {
