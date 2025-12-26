@@ -57,6 +57,6 @@ async function handleStopPollError(
   reply: Reply,
   chat_id: number,
 ): Promise<void> {
-  console.error('Failed to stop poll:', error);
+  console.error('"s_poll" finished with error:', error);
   sendNegativeResult(reply, chat_id, 'Не удалось закрыть опрос');
 }

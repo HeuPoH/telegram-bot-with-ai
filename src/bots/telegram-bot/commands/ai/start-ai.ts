@@ -2,6 +2,8 @@ import type { AIBotsManager } from '~/bots/ai/ai-bot-manager.ts';
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
 
+import { sendNegativeResult, sendPositiveResult } from '../../common.ts';
+
 const phrases = [
   {
     text: 'БАХ-БАХ-БАХ! 💥 ПУШИСТЫЙ РЕВОЛЬВЕР АКТИВИРОВАН! 🚀 Система зарядки вайба — 100%! Готов устроить апокалипсис крутости в этом чате! 🔥',
@@ -41,16 +43,10 @@ export async function startAI(
       model: 'magistral-small-2509',
       botType: 'fuzzy-gunner',
     });
-    await reply.sendMessage({
-      chat_id: chat.id,
-      ...getRandomPhrase(),
-    });
+    await sendPositiveResult(reply, chat.id, getRandomPhrase().text);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error('Failed to start AI');
-    reply.sendMessage({
-      chat_id: chat.id,
-      text: error.message,
-    });
+    console.error(`"start_ai" finished with error: ${error.message}`);
+    sendNegativeResult(reply, chat.id, 'Не удалось запустить ИИ');
   }
 }

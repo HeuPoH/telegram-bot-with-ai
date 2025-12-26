@@ -33,8 +33,9 @@ export function applyMassiveBan(update: Update, reply: Reply) {
       > 🐱💫 Hello Kitty использует [УЛЬТРА-БАН]!
       🚀💨 ${username ?? id} отправляется в бан-измерение на ${BAN_DURATION_SEC} сек.`,
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .catch((error: any) => console.error(error.message));
+    .catch(error => {
+      console.error('"apply_massive_ban" throw error:', error);
+    });
 
   return false;
 }

@@ -28,8 +28,8 @@ export function applyEmotionalDamage(data: Update, reply: Reply) {
           text: `💥 АЛЕРТ!\n<b>${user.username ?? user.first_name}</b> пытается прорваться через банхаммер!✋\nВот что хотел выстрелить наш бан-изгой:\n<tg-spoiler>${message.text ?? ''}</tg-spoiler>`,
         });
       })
-      .catch(() => {
-        console.error('Failed to apply emotional damage');
+      .catch(error => {
+        console.error('"apply_emotional_damage" throw error:', error);
       });
     return true;
   }

@@ -20,8 +20,8 @@ export function onNewChatMemeber(botId: number) {
           text: 'Щётка? Нет, не слышал. А вот опросы — моя пушистая специальность! Только что приземлился в вашем чате. Готовьте пальцы для кликов! 🎲',
         });
       }
-    } catch {
-      console.error('Failed to welcome bot');
+    } catch (error: unknown) {
+      console.error('"new_chat_member" throw error:', error);
     }
   };
 }
