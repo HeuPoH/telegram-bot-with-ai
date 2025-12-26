@@ -74,13 +74,47 @@ export class UsersStorage {
   }
 
   private getUserAvatarBotId() {
-    const bots = this.userAvatarBots.getBotIds();
+    const bots = this.getLeastLoadedBots();
     if (bots.length === 0) {
       throw new Error('No bots available');
     }
 
     const randomIndex = Math.floor(Math.random() * bots.length);
     return bots[randomIndex]!;
+  }
+
+  private getLeastLoadedBots() {
+    if (this.usersCache.size === 0) {
+      return this.userAvatarBots.getBotIds();
+    }
+
+    const loadedBots = new Map<string, number>();
+    for (const botId of this.userAvatarBots.getBotIds()) {
+      loadedBots.set(botId, 0);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const [_, botId] of this.usersCache.entries()) {
+      const totalUsed = loadedBots.get(botId);
+      if (totalUsed !== undefined) {
+        loadedBots.set(botId, totalUsed + 1);
+      }
+    }
+
+    let minimum = Number.POSITIVE_INFINITY;
+    let botIds: string[] = [];
+    for (const [botId, total] of loadedBots.entries()) {
+      if (total < minimum) {
+        minimum = total;
+        botIds = [botId];
+      }
+
+      if (total === minimum) {
+        botIds.push(botId);
+      }
+    }
+
+    return botIds;
   }
 
   private loadUsersMap() {
@@ -90,9 +124,9 @@ export class UsersStorage {
 
       const items = data.split(USER_RECORD_SEPARATOR);
       for (const item of items) {
-        const [key, value] = parseUserRecord(item);
-        if (key && value) {
-          users.set(key, value);
+        const [userId, botId] = parseUserRecord(item);
+        if (userId && botId) {
+          users.set(userId, botId);
         }
       }
 
