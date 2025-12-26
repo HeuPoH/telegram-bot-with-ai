@@ -87,11 +87,11 @@ export class FuzzyGunnerBot implements BaseAIBot {
       return typedContent.text;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      console.error(`Uknown error: ${error.message}`);
       reply.sendMessage({
         chat_id: chatId,
         text: 'Произошли неизвестная ошибка...',
       });
-      console.warn(error);
     }
   }
 
@@ -130,8 +130,8 @@ function parseBotResponse(str: string): {
     try {
       return JSON.parse(jsonMatch[0]);
     } catch {
-      throw new Error(`Невалидный JSON: ${jsonMatch[0]}`);
+      throw new Error(`Invalid JSON: ${jsonMatch[0]}`);
     }
   }
-  throw new Error('JSON не найден в ответе');
+  throw new Error('JSON is not found');
 }

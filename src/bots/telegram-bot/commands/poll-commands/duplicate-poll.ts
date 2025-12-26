@@ -27,7 +27,7 @@ export async function duplicatePoll(data: CommandData, reply: Reply) {
 
     await reply.sendPoll(sendPollData);
   } catch (error) {
-    console.error('Failed to duplicate poll:', error);
+    console.error('"d_poll" finished with error:', error);
     sendNegativeResult(reply, id, 'Произошла ошибка при создании опроса');
   }
 }

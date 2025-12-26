@@ -36,5 +36,5 @@ function deleteMessageError(data: CommandData, reply: Reply, error: unknown) {
   } else if (error instanceof Error) {
     sendNegativeResult(reply, chat_id, error.message);
   }
-  console.error('Failed to delete message:', error);
+  console.error('"d_message" finished with error', error);
 }

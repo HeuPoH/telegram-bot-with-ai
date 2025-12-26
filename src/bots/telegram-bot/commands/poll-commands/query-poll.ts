@@ -29,7 +29,7 @@ export async function queryPoll(data: CommandData, reply: Reply) {
       is_anonymous,
     });
   } catch (error: unknown) {
-    console.error('Failed to create poll:', error);
+    console.error('"q_poll" finished with error:', error);
     sendNegativeResult(reply, chat_id, 'Произошла ошибка при создании опроса');
   }
 }

@@ -2,6 +2,8 @@ import type { AIBotsManager } from '~/bots/ai/ai-bot-manager.ts';
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
 
+import { sendNegativeResult, sendPositiveResult } from '../../common.ts';
+
 const phrases = [
   {
     text: 'БАХ... 💥 ПУШИСТЫЙ РЕВОЛЬВЕР УХОДИТ В СПЯЧКУ! 🐨 Заряд вайба на исходе... Но я еще вернусь с новыми фишками! 💤',
@@ -37,16 +39,10 @@ export async function stopAI(
 
   try {
     aiBotsManager.stopBot(`${chat.id}`);
-    await reply.sendMessage({
-      chat_id: chat.id,
-      ...getRandomPhrase(),
-    });
+    await sendPositiveResult(reply, chat.id, getRandomPhrase().text);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error('Failed to stop AI');
-    reply.sendMessage({
-      chat_id: chat.id,
-      text: error.message,
-    });
+    console.error(`"stop_ai" finished with error: ${error.message}`);
+    sendNegativeResult(reply, chat.id, 'Не удалось остановить ИИ');
   }
 }

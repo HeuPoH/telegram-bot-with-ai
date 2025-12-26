@@ -331,8 +331,8 @@ export class TelegramBot implements TelegramBotEventHandlers {
 
       // Вызываем все зарегистрированные обработчики сообщений
       this.messageHandles.forEach(cb => cb(update, this.api));
-    } catch {
-      console.warn('Unhandled error in handleMessage');
+    } catch (error: unknown) {
+      console.error('Unhandled error in "handleMessage":', error);
     }
   };
 }

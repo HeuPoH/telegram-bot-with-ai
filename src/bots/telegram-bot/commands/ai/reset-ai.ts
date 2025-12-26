@@ -2,6 +2,8 @@ import type { AIBotsManager } from '~/bots/ai/ai-bot-manager.ts';
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
 
+import { sendNegativeResult, sendPositiveResult } from '../../common.ts';
+
 export async function resetAIs(
   data: CommandData,
   reply: Reply,
@@ -14,16 +16,10 @@ export async function resetAIs(
 
   try {
     aiBotsManager.resetBots();
-    await reply.sendMessage({
-      chat_id: chat.id,
-      text: 'ПУШИСТЫЙ РЕБУТ АКТИВИРОВАН! 🚀',
-    });
+    await sendPositiveResult(reply, chat.id, 'ПУШИСТЫЙ РЕБУТ АКТИВИРОВАН! 🚀');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error('Failed to reset AI');
-    reply.sendMessage({
-      chat_id: chat.id,
-      text: error.message,
-    });
+    console.error(`"reset_ai" finished with error: ${error.message}`);
+    sendNegativeResult(reply, chat.id, 'Не удалось сбросить API токены у ИИ');
   }
 }

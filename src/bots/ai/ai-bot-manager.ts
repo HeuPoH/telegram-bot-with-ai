@@ -37,7 +37,7 @@ export class AIBotsManager {
 
     const botFactItem = factory.getRegistered(botType);
     if (!botFactItem) {
-      throw new Error(`${botType} не найден`);
+      throw new Error(`${botType} is not found`);
     }
 
     const client = new Mistral({ apiKey });

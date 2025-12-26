@@ -47,7 +47,9 @@ export async function emotionalDamageOn(data: CommandData, reply: Reply) {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error(error);
-    sendNegativeResult(reply, chat_id, 'Ошибка при запсуке Emotional damage');
+    console.error(
+      `"emotional_damage_off" finished with error: ${error.message}`,
+    );
+    sendNegativeResult(reply, chat_id, 'Ошибка при запуске Emotional damage');
   }
 }

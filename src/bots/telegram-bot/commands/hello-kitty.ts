@@ -3,6 +3,8 @@ import { appStore } from '~/core/app-store.ts';
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
 
+import { sendNegativeResult } from '../common.ts';
+
 const kitty_say_hi =
   'CgACAgQAAyEFAASmv4DZAAIKt2kha4U9TtKUDJxdmMkGajiBJVdyAAI1BAACa1S9UxdCkiqjAUsKNgQ';
 const kitty_say_bye =
@@ -19,9 +21,8 @@ export async function helloKitty(data: CommandData, reply: Reply) {
     return;
   }
 
+  const chatId = message.chat.id;
   try {
-    const chatId = message.chat.id;
-
     await reply.deleteMessage({
       chat_id: chatId,
       message_id: data.message.message_id,
@@ -40,10 +41,15 @@ export async function helloKitty(data: CommandData, reply: Reply) {
           chat_id: chatId,
           animation: kitty_say_bye,
         })
-        .catch((error: any) => console.log(error))
+        .catch((error: any) => console.error(error))
         .finally(() => appStore.setAppStatus('default'));
     }, 30_000);
   } catch (error: any) {
-    console.error(error.message);
+    console.error(`"hello_kitty" finished with error: ${error.message}`);
+    sendNegativeResult(
+      reply,
+      chatId,
+      'Произошла ошибка при запуске "hello_kitty"',
+    );
   }
 }

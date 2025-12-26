@@ -41,7 +41,7 @@ export class LongPolling implements BotConnection {
           error instanceof CustomTelegramResponseError &&
           shouldStopPermanently(error.getStatus())
         ) {
-          console.log(error.message);
+          console.error(error.message);
           this.stop();
           break;
         }
