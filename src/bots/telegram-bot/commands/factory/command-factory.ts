@@ -12,6 +12,7 @@ import { help } from '../help.ts';
 import { duplicatePoll } from '../poll-commands/duplicate-poll.ts';
 import { queryPoll } from '../poll-commands/query-poll.ts';
 import { stopPoll } from '../poll-commands/stop-poll.ts';
+import { newYear } from '../new-year.ts';
 import type { CommandsFactoryItem } from './types.ts';
 
 const factory = new Factory<CommandsFactoryItem>();
@@ -126,6 +127,12 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     label: 'Массовый бан',
     type: '/hello_kitty',
     handle: helloKitty,
+  });
+
+  factory.register('/new_year', {
+    label: 'Новый год',
+    type: '/new_year',
+    handle: newYear,
   });
 }
 

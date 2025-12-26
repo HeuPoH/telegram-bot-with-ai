@@ -3,10 +3,16 @@ import type { Update } from '~/core/telegram-api/bot-types/update.ts';
 
 import { getStrategyReply } from './reply-by-user-avatar.ts';
 import { UsersStorage } from './users-storage.ts';
+import { newYearSettings } from './settings/new-year-settings.ts';
 
 export function applyNewYear(update: Update, reply: Reply) {
   const message = update.message;
   if (!message) {
+    return false;
+  }
+
+  const messageEntity = message.entities?.[0];
+  if (messageEntity?.type === 'bot_command') {
     return false;
   }
 
@@ -21,11 +27,11 @@ export function applyNewYear(update: Update, reply: Reply) {
   }
 
   if (from.is_bot) {
-    return true;
+    return false;
   }
 
   const chat_id = message.chat.id;
-  if (chat_id != +process.env.TARGET_CHAT_ID_FOR_NEW_YEAR!) {
+  if (`${chat_id}` !== newYearSettings.getTargetChatId()) {
     return false;
   }
 

@@ -13,7 +13,8 @@ export type Command =
   | 'reset_ais'
   | 'emotional_damage_on'
   | 'emotional_damage_off'
-  | 'hello_kitty';
+  | 'hello_kitty'
+  | 'new_year';
 
 type Description = {
   format: string;

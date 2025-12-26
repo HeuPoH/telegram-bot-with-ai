@@ -1,0 +1,61 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
+import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
+import { newYearSettings } from '../new-year/settings/new-year-settings.ts';
+import { UsersStorage } from '../new-year/users-storage.ts';
+import { sendNegativeResult, sendPositiveResult } from '../common.ts';
+
+export async function newYear(data: CommandData, reply: Reply) {
+  const message = data.message;
+  if (!message) {
+    return;
+  }
+
+  const chatId = message.chat.id;
+  try {
+    const flags = data.command_flags;
+    if (!flags?.m) {
+      return sendNegativeResult(
+        reply,
+        chatId,
+        `ℹ️ Использование:
+          /new_year -m=[on|off]
+        • -m="on" - активирует режим для этого чата
+        • -m="off" - деактивирует режим`
+      );
+    }
+
+    if (flags.m !== 'on' && flags.m !== 'off') {
+      return sendNegativeResult(
+        reply,
+        chatId,
+        `❌ Недопустимое значение флага -m.
+        Используйте "on" или "off"`
+      );
+    }
+
+    const currentChatId = `${chatId}`;
+    if (flags.m === 'on') {
+      const isAlreadyActive = newYearSettings.getTargetChatId() === currentChatId;
+      if (isAlreadyActive) {
+        return sendNegativeResult(reply, chatId, '❌ Режим уже запущен в этом чате');
+      }
+
+      newYearSettings.setTargetChatId(currentChatId);
+      const usersStorage = await UsersStorage.getInstance();
+      usersStorage?.resetCache();
+      return sendPositiveResult(reply, chatId, '🎄🎄🎄 Режим активирован 🎄🎄🎄');
+    } else {
+      const targetChatId = newYearSettings.getTargetChatId();
+      if (currentChatId === targetChatId) {
+        newYearSettings.setTargetChatId('-1');
+        return sendPositiveResult(reply, chatId, '🎄🎄🎄 Режим остановлен🎄🎄🎄');
+      } else {
+        return sendNegativeResult(reply, chatId, '❌ Режим еще не был запущен в этом чате');
+      }
+    }
+  } catch (error: any) {
+    console.error(`new_year command throw exception ${error.message}`);
+    sendNegativeResult(reply, chatId, 'Произошла ошибка при запуске режима new_year');
+  }
+}

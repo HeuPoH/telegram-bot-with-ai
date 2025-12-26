@@ -1,11 +1,14 @@
 import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-import { getFilePath } from './helpers.ts';
 import { UserAvatarBotsStorage } from './user-avatar-bots-storage.ts';
 
 type UsersMap = Map<string, string>;
 
-const USERS_FILE_PATH = getFilePath('users.txt');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const USERS_FILE_PATH = path.join(__dirname, 'users.txt');
 
 const USER_RECORD_SEPARATOR = ';';
 
@@ -42,7 +45,7 @@ export class UsersStorage {
       await UsersStorage.initializationPromise;
     }
 
-    return UsersStorage.instance;
+    return UsersStorage.instance!;
   }
 
   getUserAvatar(userId: number) {
@@ -71,6 +74,11 @@ export class UsersStorage {
     }
 
     return bot;
+  }
+
+  resetCache() {
+    fs.writeFileSync(USERS_FILE_PATH, '');
+    this.usersCache.clear();
   }
 
   private getUserAvatarBotId() {
