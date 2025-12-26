@@ -2,7 +2,7 @@
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
 import { newYearSettings } from '../new-year/settings/new-year-settings.ts';
-import { UsersStorage } from '../new-year/users-storage.ts';
+import { UsersStorage } from '../new-year/users-storage/users-storage.ts';
 import { sendNegativeResult, sendPositiveResult } from '../common.ts';
 
 export async function newYear(data: CommandData, reply: Reply) {

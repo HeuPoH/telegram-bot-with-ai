@@ -10,7 +10,7 @@ try {
     mkdirSync(path.join(__dirname, 'dist'));
   }
 
-  writeFileSync(path.join(__dirname, 'dist', 'users.txt'), '');
+  writeFileSync(path.join(__dirname, 'dist', 'users-storage.json'), '{}');
   writeFileSync(path.join(__dirname, 'dist', 'new-year-settings.json'), '{}');
   console.log('✅ Файл users.txt успешно создан');
   console.log('✅ Файл new-year-settings.json успешно создан');

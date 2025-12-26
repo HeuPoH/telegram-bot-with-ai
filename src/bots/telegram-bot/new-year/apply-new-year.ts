@@ -2,7 +2,7 @@ import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { Update } from '~/core/telegram-api/bot-types/update.ts';
 
 import { getStrategyReply } from './reply-by-user-avatar.ts';
-import { UsersStorage } from './users-storage.ts';
+import { UsersStorage } from './users-storage/users-storage.ts';
 import { newYearSettings } from './settings/new-year-settings.ts';
 
 export function applyNewYear(update: Update, reply: Reply) {
@@ -58,7 +58,7 @@ export function applyNewYear(update: Update, reply: Reply) {
       return strategyReply(message, userAvatar.getApi());
     })
     .catch(error => {
-      console.error(`Aplly new year throw error: ${error}`);
+      console.error(`Apply new year throw error: ${error}`);
     });
 
   return true;

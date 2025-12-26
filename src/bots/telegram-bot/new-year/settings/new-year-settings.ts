@@ -54,7 +54,7 @@ class NewYearSettings {
       };
       
     } catch (error) {
-      console.error('Ошибка загрузки настроек:', error);
+      console.error('Error loading settings:', error);
       this.settings = { ...this.defaultSettings };
     }
   }
@@ -64,7 +64,7 @@ class NewYearSettings {
       const data = JSON.stringify(this.settings, null, 2);
       writeFileSync(SETTINGS_PATH, data, 'utf8');
     } catch (error) {
-      console.error('Ошибка сохранения настроек:', error);
+      console.error('Error saving settings:', error);
     }
   }
 }
