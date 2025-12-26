@@ -51,10 +51,18 @@ export class UserAvatarBotsStorage {
     }
 
     for (const token of tokens) {
-      const promise = TelegramBot.create(token, [
-        'message',
-        'inline_query',
-      ]).then(instance => {
+      const [botId] = token.split(':');
+      const botIdAsNumber = +botId!;
+      if (!botIdAsNumber) {
+        console.warn(`Bot id is not found in the token: ${token}`);
+        continue;
+      }
+
+      const promise = TelegramBot.create(token, ['message', 'inline_query'], {
+        id: botIdAsNumber,
+        is_bot: true,
+        first_name: 'Bot',
+      }).then(instance => {
         this.bots.set(`${instance.getBotInfo().id}`, instance);
       });
       promises.push(promise);
