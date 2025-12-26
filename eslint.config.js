@@ -11,6 +11,10 @@ export default defineConfig([
   ...tseslint.configs.recommended,
   eslintPluginUnicorn.configs['recommended'],
   {
+    env: {
+      node: true,
+      es2021: true
+    },
     files: ['**/*.{js,ts}'],
     ignores: ['**/*.js', 'dist/**/*', 'node_modules/**/*'],
     plugins: {
