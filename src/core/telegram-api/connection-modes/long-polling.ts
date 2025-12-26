@@ -98,9 +98,8 @@ export class LongPolling implements BotConnection {
         this.offset = update.update_id + 1;
         this.handler(update);
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      console.error('poll got error');
+    } catch (error) {
+      console.error(`poll got error: ${error}`);
       throw error;
     }
   }
