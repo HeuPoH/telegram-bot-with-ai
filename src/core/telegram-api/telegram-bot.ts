@@ -46,9 +46,15 @@ export class TelegramBot implements TelegramBotEventHandlers {
    * @example
    * const bot = await TelegramBot.create('YOUR_BOT_TOKEN');
    */
-  static async create(token: string, updateTypes: (keyof EventTypes)[]) {
+  static async create(
+    token: string,
+    updateTypes: (keyof EventTypes)[],
+    botInfo?: User,
+  ) {
     const bot = new TelegramBot(token, updateTypes);
-    await bot.init();
+    if (!botInfo) {
+      await bot.init();
+    }
     return bot;
   }
 
@@ -70,14 +76,13 @@ export class TelegramBot implements TelegramBotEventHandlers {
   /**
    * Инициализирует бота, получая информацию о нем от Telegram API
    * Заполняет данные о боте (ID, имя, username и т.д.)
-   * @private
    */
   async init() {
     try {
       const botInfo = await this.api.getMe();
       this.botInfo = botInfo;
-    } catch {
-      console.error('Getting bot information was failed');
+    } catch (error) {
+      console.error(`Getting bot information was failed: ${error}`);
     }
   }
 
@@ -272,6 +277,15 @@ export class TelegramBot implements TelegramBotEventHandlers {
    */
   getBotInfo() {
     return this.botInfo;
+  }
+
+  /**
+   * Устанавливает информацию о боте
+   * @returns Объект с данными о боте (ID, имя, username и т.д.)
+   * @param info - Информация о боте
+   */
+  setBotInfo(info: User) {
+    this.botInfo = info;
   }
 
   /**

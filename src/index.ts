@@ -24,10 +24,15 @@ config({ path: '../.env' });
     return;
   }
 
-  const bot = await TelegramBot.create(telegramBotApi, [
-    'message',
-    'inline_query',
-  ]);
+  const bot = await TelegramBot.create(
+    telegramBotApi,
+    ['message', 'inline_query'],
+    {
+      id: +telegramBotApi.split(':')[0]!,
+      is_bot: true,
+      first_name: 'Bot',
+    },
+  );
   const aiBotsManager = new AIBotsManager(bot);
 
   registerCommands(aiBotsManager);
