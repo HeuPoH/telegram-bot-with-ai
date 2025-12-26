@@ -4,6 +4,7 @@ import type { SendAnimation } from '~/core/telegram-api/bot-types/send-animation
 import type { SendMessage } from '~/core/telegram-api/bot-types/send-message.ts';
 import type { SendPhoto } from '~/core/telegram-api/bot-types/send-photo.ts';
 import type { SendSticker } from '~/core/telegram-api/bot-types/send-sticker.ts';
+import type { User } from '~/core/telegram-api/bot-types/user.ts';
 
 export function getStrategyReply(message: Message) {
   if (message.sticker) {
@@ -37,8 +38,61 @@ function sendMessage(message: Message, reply: Reply) {
     text: message.text,
   };
 
-  putReplyParamsIfNeed(message, data);
+  if (message.reply_to_message) {
+    applyReplyMessageIfNeed(message.reply_to_message, data);
+  }
+
   return reply.sendMessage(data);
+}
+
+function applyReplyMessageIfNeed(replyMessage: Message, data: SendMessage) {
+  const originalMsg = replyMessage;
+  const originalFrom = originalMsg.from;
+
+  data.parse_mode = 'HTML';
+  data.link_preview_options = { is_disabled: true };
+
+  const messageLink = makeMessageLink(originalMsg);
+  const authorName = makeAuthorName(originalFrom);
+
+  let quoteText = '';
+  if (originalMsg.text) {
+    quoteText = makeMessageShorter(extractOriginalTextRegex(originalMsg.text));
+  } else if (originalMsg.sticker) {
+    quoteText = originalMsg.sticker.emoji
+      ? `Стикер ${originalMsg.sticker.emoji}`
+      : 'Стикер';
+  } else if (originalMsg.photo) {
+    quoteText = 'Фотография';
+    if (originalMsg.caption) {
+      quoteText += `: ${originalMsg.caption.slice(0, 50)}...`;
+    }
+  } else if (originalMsg.animation) {
+    quoteText = 'GIF-анимация';
+  } else {
+    quoteText = 'Сообщение';
+  }
+
+  data.text = `👇 <b>Ответ на сообщение</b>\n├ <b>От:</b> <a href="${messageLink}">${authorName}</a>\n├ <b>Текст:</b> <i>${quoteText}</i>\n└\n${data.text}`;
+}
+
+function extractOriginalTextRegex(formattedText: string): string {
+  const match = formattedText.match(/└\n([\S\s]*)/);
+  return match ? match[1] || formattedText : formattedText;
+}
+
+function makeMessageLink(message: Message) {
+  // Преобразуем chat_id для публичной ссылки (убираем "-100")
+  const sourceChatIdForLink = String(message.chat.id).replace('-100', '');
+  return `https://t.me/c/${sourceChatIdForLink}/${message.message_id}`;
+}
+
+function makeAuthorName(from?: User) {
+  return from?.first_name ?? 'Неизвестный';
+}
+
+function makeMessageShorter(text: string) {
+  return text.length > 30 ? text.slice(0, 30) + '...' : text;
 }
 
 function sendAnimation(message: Message, reply: Reply) {
@@ -55,7 +109,6 @@ function sendAnimation(message: Message, reply: Reply) {
     duration: animation.duration,
   };
 
-  putReplyParamsIfNeed(message, data);
   return reply.sendAnimation(data);
 }
 
@@ -71,7 +124,6 @@ function sendSticker(message: Message, reply: Reply) {
     emoji: sticker.emoji,
   };
 
-  putReplyParamsIfNeed(message, data);
   return reply.sendSticker(data);
 }
 
@@ -104,11 +156,4 @@ function sendPoll(message: Message, reply: Reply) {
     allows_multiple_answers: poll.allows_multiple_answers,
     type: poll.type,
   });
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function putReplyParamsIfNeed(message: Message, data: any) {
-  if (message.reply_to_message) {
-    data.reply_parameters = { message_id: message.reply_to_message.message_id };
-  }
 }
