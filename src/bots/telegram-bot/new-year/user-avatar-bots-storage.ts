@@ -1,4 +1,5 @@
 import { TelegramBot } from '~/core/telegram-api/telegram-bot.ts';
+import { extractBotIdFromToken } from '~/utils/bot-token.ts';
 
 export class UserAvatarBotsStorage {
   static instance: UserAvatarBotsStorage | undefined;
@@ -51,15 +52,13 @@ export class UserAvatarBotsStorage {
     }
 
     for (const token of tokens) {
-      const [botId] = token.split(':');
-      const botIdAsNumber = +botId!;
-      if (!botIdAsNumber) {
-        console.warn(`Bot id is not found in the token: ${token}`);
+     const botId = extractBotIdFromToken(token);
+      if (botId === -1) {
         continue;
       }
 
       const promise = TelegramBot.create(token, ['message', 'inline_query'], {
-        id: botIdAsNumber,
+        id: botId,
         is_bot: true,
         first_name: 'Bot',
       }).then(instance => {
