@@ -340,6 +340,7 @@ export class TelegramBot implements TelegramBotEventHandlers {
 /**
  * Определяет тип сущности в полученном обновлении
  * Анализирует первую сущность в сообщении для определения типа контента
+ * ВАЖНО: Необходимо заранее загрузить/сохранить имя бота
  * @param update - Обновление от Telegram API
  * @returns Тип сущности (bot_command, mention и т.д.) или undefined если сущность не найдена
  */
