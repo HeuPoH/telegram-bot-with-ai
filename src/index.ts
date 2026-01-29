@@ -14,7 +14,6 @@ import { setUseMention } from './bots/telegram-bot/mention/index.ts';
 import { onNewChatMemeber } from './bots/telegram-bot/new-chat-member.ts';
 import { applyNewYear } from './bots/telegram-bot/new-year/apply-new-year.ts';
 import { TelegramBot } from './core/telegram-api/telegram-bot.ts';
-import { extractBotIdFromToken } from './utils/bot-token.ts';
 
 config({ path: '../.env' });
 
@@ -26,15 +25,10 @@ config({ path: '../.env' });
     return;
   }
 
-  const bot = await TelegramBot.create(
-    telegramBotApi,
-    ['message', 'inline_query'],
-    {
-      id: extractBotIdFromToken(telegramBotApi),
-      is_bot: true,
-      first_name: 'Bot',
-    },
-  );
+  const bot = await TelegramBot.create(telegramBotApi, [
+    'message',
+    'inline_query',
+  ]);
   const aiBotsManager = new AIBotsManager(bot);
 
   registerCommands(aiBotsManager);
