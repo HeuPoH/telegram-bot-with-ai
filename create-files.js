@@ -11,9 +11,9 @@ try {
   }
 
   writeFileSync(path.join(__dirname, 'dist', 'users-storage.json'), '{}');
-  writeFileSync(path.join(__dirname, 'dist', 'new-year-settings.json'), '{}');
+  writeFileSync(path.join(__dirname, 'dist', 'settings.json'), '{}');
   console.log('✅ Файл users.txt успешно создан');
-  console.log('✅ Файл new-year-settings.json успешно создан');
+  console.log('✅ Файл settings.json успешно создан');
 
   const environmentPath = path.join(__dirname, '.env');
   const distributionEnvironmentPath = path.join(__dirname, 'dist', '.env');

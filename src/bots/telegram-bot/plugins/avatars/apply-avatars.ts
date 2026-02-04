@@ -3,9 +3,9 @@ import type { Update } from '~/core/telegram-api/bot-types/update.ts';
 
 import { getStrategyReply } from './reply-by-user-avatar.ts';
 import { UsersStorage } from './users-storage/users-storage.ts';
-import { newYearSettings } from './settings/new-year-settings.ts';
+import { storeSettings } from './settings/settings.ts';
 
-export function applyNewYear(update: Update, reply: Reply) {
+export function applyAvatars(update: Update, reply: Reply) {
   const message = update.message;
   if (!message) {
     return false;
@@ -31,7 +31,7 @@ export function applyNewYear(update: Update, reply: Reply) {
   }
 
   const chat_id = message.chat.id;
-  if (`${chat_id}` !== newYearSettings.getTargetChatId()) {
+  if (`${chat_id}` !== storeSettings.getTargetChatId()) {
     return false;
   }
 
@@ -58,7 +58,7 @@ export function applyNewYear(update: Update, reply: Reply) {
       return strategyReply(message, userAvatar.getApi());
     })
     .catch(error => {
-      console.error(`"apply_new_year" throw error: ${error}`);
+      console.error(`"apply_avatars" throw error: ${error}`);
     });
 
   return true;

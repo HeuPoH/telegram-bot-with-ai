@@ -12,7 +12,7 @@ import {
 } from './bots/telegram-bot/commands/index.ts';
 import { setUseMention } from './bots/telegram-bot/mention/index.ts';
 import { onNewChatMemeber } from './bots/telegram-bot/new-chat-member.ts';
-import { applyNewYear } from './bots/telegram-bot/new-year/apply-new-year.ts';
+import { applyAvatars } from './bots/telegram-bot/plugins/avatars/apply-avatars.ts';
 import { TelegramBot } from './core/telegram-api/telegram-bot.ts';
 
 config({ path: '../.env' });
@@ -37,7 +37,7 @@ config({ path: '../.env' });
 
   setUseMention(bot);
 
-  bot.onUseMessage(applyNewYear);
+  bot.onUseMessage(applyAvatars);
   bot.onUseMessage(applyMassiveBan);
   bot.onUseMessage(applyEmotionalDamage);
   bot.onMessage(onNewChatMemeber(bot.getBotInfo().id));

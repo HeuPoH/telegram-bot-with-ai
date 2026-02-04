@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
-import { newYearSettings } from '../new-year/settings/new-year-settings.ts';
-import { UsersStorage } from '../new-year/users-storage/users-storage.ts';
+import { storeSettings } from '../plugins/avatars/settings/settings.ts';
+import { UsersStorage } from '../plugins/avatars/users-storage/users-storage.ts';
 import { sendNegativeResult, sendPositiveResult } from '../common.ts';
 
-export async function newYear(data: CommandData, reply: Reply) {
+export async function avatars(data: CommandData, reply: Reply) {
   const message = data.message;
   if (!message) {
     return;
@@ -19,7 +19,7 @@ export async function newYear(data: CommandData, reply: Reply) {
         reply,
         chatId,
         `ℹ️ Использование:
-          /new_year -m=[on|off]
+          /avatars -m=[on|off]
         • -m="on" - активирует режим для этого чата
         • -m="off" - деактивирует режим`
       );
@@ -36,26 +36,26 @@ export async function newYear(data: CommandData, reply: Reply) {
 
     const currentChatId = `${chatId}`;
     if (flags.m === 'on') {
-      const isAlreadyActive = newYearSettings.getTargetChatId() === currentChatId;
+      const isAlreadyActive = storeSettings.getTargetChatId() === currentChatId;
       if (isAlreadyActive) {
         return sendNegativeResult(reply, chatId, '❌ Режим уже запущен в этом чате');
       }
 
-      newYearSettings.setTargetChatId(currentChatId);
+      storeSettings.setTargetChatId(currentChatId);
       const usersStorage = await UsersStorage.getInstance();
       usersStorage?.resetCache();
       return sendPositiveResult(reply, chatId, '🎄🎄🎄 Режим активирован 🎄🎄🎄');
     } else {
-      const targetChatId = newYearSettings.getTargetChatId();
+      const targetChatId = storeSettings.getTargetChatId();
       if (currentChatId === targetChatId) {
-        newYearSettings.setTargetChatId('-1');
+        storeSettings.setTargetChatId('-1');
         return sendPositiveResult(reply, chatId, '🎄🎄🎄 Режим остановлен🎄🎄🎄');
       } else {
         return sendNegativeResult(reply, chatId, '❌ Режим еще не был запущен в этом чате');
       }
     }
   } catch (error: any) {
-    console.error(`"new_year" finished with error: ${error.message}`);
-    sendNegativeResult(reply, chatId, 'Произошла ошибка при запуске режима new_year');
+    console.error(`"avatars" finished with error: ${error.message}`);
+    sendNegativeResult(reply, chatId, 'Произошла ошибка при запуске режима avatars');
   }
 }

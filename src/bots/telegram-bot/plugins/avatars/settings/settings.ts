@@ -2,16 +2,15 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const SETTINGS_PATH = path.join(__dirname, 'new-year-settings.json');
+const SETTINGS_PATH = path.join(__dirname, 'settings.json');
 
 interface Settings {
   TARGET_CHAT_ID: string;
 }
 
-class NewYearSettings {
+class StoreSettings {
   private settings: Settings = {
     TARGET_CHAT_ID: '-1',
   };
@@ -69,4 +68,4 @@ class NewYearSettings {
   }
 }
 
-export const newYearSettings = new NewYearSettings();
+export const storeSettings = new StoreSettings();

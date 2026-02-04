@@ -14,7 +14,7 @@ export type Command =
   | 'emotional_damage_on'
   | 'emotional_damage_off'
   | 'hello_kitty'
-  | 'new_year';
+  | 'avatars';
 
 type Description = {
   format: string;

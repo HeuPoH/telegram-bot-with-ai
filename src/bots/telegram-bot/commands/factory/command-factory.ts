@@ -12,7 +12,7 @@ import { help } from '../help.ts';
 import { duplicatePoll } from '../poll-commands/duplicate-poll.ts';
 import { queryPoll } from '../poll-commands/query-poll.ts';
 import { stopPoll } from '../poll-commands/stop-poll.ts';
-import { newYear } from '../new-year.ts';
+import { avatars } from '../avatars.ts';
 import type { CommandsFactoryItem } from './types.ts';
 
 const factory = new Factory<CommandsFactoryItem>();
@@ -129,10 +129,10 @@ export function registerCommands(aiBotsManager: AIBotsManager) {
     handle: helloKitty,
   });
 
-  factory.register('/new_year', {
-    label: 'Новый год',
-    type: '/new_year',
-    handle: newYear,
+  factory.register('/avatars', {
+    label: 'Аватары',
+    type: '/avatars',
+    handle: avatars,
   });
 }
 
