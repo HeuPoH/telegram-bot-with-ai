@@ -1,10 +1,31 @@
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
+import { sendNegativeResult } from '~/bots/telegram-bot/common.ts';
+import type { CommandsFactoryItem } from '~/bots/telegram-bot/commands/factory/types.ts';
 
-import { sendNegativeResult } from '../../common.ts';
 import { parsePollOptions } from './common.ts';
 
-export async function queryPoll(data: CommandData, reply: Reply) {
+export const QueryPoll: CommandsFactoryItem = {
+  label: 'Создать опрос',
+  type: '/q_poll',
+  handle: queryPoll,
+  description: () => ({
+    format:
+      '/q_poll [-a] "Название опроса" "Вариант 1" "Вариант 2" "Вариант 3"',
+    examples: [
+      '/q_poll "Лучший язык?" "Python" "JavaScript" "Rust"',
+      '/q_poll -a "Анонимный опрос" "Да" "Нет" "Возможно"',
+    ],
+    flags: [
+      [
+        '-a',
+        'Сделать опрос анонимным (без отображения имен проголосовавших)',
+      ],
+    ],
+  })
+};
+
+async function queryPoll(data: CommandData, reply: Reply) {
   if (!data.message) {
     return;
   }

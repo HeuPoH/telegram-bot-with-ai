@@ -1,11 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
-import { storeSettings } from '../plugins/avatars/settings/settings.ts';
-import { UsersStorage } from '../plugins/avatars/users-storage/users-storage.ts';
-import { sendNegativeResult, sendPositiveResult } from '../common.ts';
+import { sendNegativeResult, sendPositiveResult } from '../../common.ts';
+import { storeSettings } from './settings/settings.ts';
+import { UsersStorage } from './users-storage/users-storage.ts';
+import type { CommandsFactoryItem } from '../../commands/factory/types.ts';
 
-export async function avatars(data: CommandData, reply: Reply) {
+export const AvatarsItem: CommandsFactoryItem = {
+  label: 'Аватары',
+  type: '/avatars',
+  handle: avatars,
+  description: () => {
+    return {
+      format: '/avatars -m="on"|"off"',
+      examples: [
+        '/avatars -m="on"',
+        '/avatars -m="off"'
+      ],
+      flags: [
+        [
+          '-m',
+          'Включить/Отключить режим'
+        ]
+      ]
+    };
+  }
+};
+
+async function avatars(data: CommandData, reply: Reply) {
   const message = data.message;
   if (!message) {
     return;

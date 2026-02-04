@@ -1,9 +1,19 @@
+import type { CommandsFactoryItem } from '~/bots/telegram-bot/commands/factory/types.ts';
+import { prepareSendResult, sendNegativeResult } from '~/bots/telegram-bot/common.ts';
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
 
-import { prepareSendResult, sendNegativeResult } from '../../common.ts';
+export const StopPoll: CommandsFactoryItem = {
+  label: 'Закрыть опрос',
+  type: '/s_poll',
+  handle: stopPoll,
+  description: () => ({
+    format: '/s_poll',
+    more: '<u>Требование:</u>\nОтветить на сообщение с опросом',
+  })
+};
 
-export async function stopPoll(data: CommandData, reply: Reply): Promise<void> {
+async function stopPoll(data: CommandData, reply: Reply): Promise<void> {
   const message = data.message;
   if (!message) {
     return;

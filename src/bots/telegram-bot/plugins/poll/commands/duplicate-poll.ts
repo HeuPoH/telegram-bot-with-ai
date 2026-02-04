@@ -1,10 +1,26 @@
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
+import type { CommandsFactoryItem } from '~/bots/telegram-bot/commands/factory/types.ts';
+import { sendNegativeResult } from '~/bots/telegram-bot/common.ts';
 
-import { sendNegativeResult } from '../../common.ts';
 import { createPollData, parsePollOptions } from './common.ts';
 
-export async function duplicatePoll(data: CommandData, reply: Reply) {
+export const DuplicatePoll: CommandsFactoryItem = {
+  label: 'Дублировать опрос',
+  type: '/d_poll',
+  handle: duplicatePoll,
+  description: () => ({
+    format: '/d_poll (можно добавить "Новое название" "Новый вариант 1" ...)',
+    examples: [
+      '/d_poll',
+      '/d_poll "Новый опрос"',
+      '/d_poll "Новый" "Вариант 1" "Вариант 2"',
+    ],
+    more: '<u>Требование:</u>\nОтветить на сообщение с опросом',
+  })
+};
+
+async function duplicatePoll(data: CommandData, reply: Reply) {
   if (!data.message) {
     return;
   }

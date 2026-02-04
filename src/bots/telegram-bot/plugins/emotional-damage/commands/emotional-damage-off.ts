@@ -1,10 +1,20 @@
+import type { CommandsFactoryItem } from '~/bots/telegram-bot/commands/factory/types.ts';
+import { sendNegativeResult } from '~/bots/telegram-bot/common.ts';
 import { bansManager } from '~/core/app-store.ts';
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { Update } from '~/core/telegram-api/bot-types/update.ts';
 
-import { sendNegativeResult } from '../../common.ts';
+export const EmotionalDamageOff: CommandsFactoryItem = {
+  label: 'Разбанить',
+  type: '/emotional_damage_off',
+  handle: emotionalDamageOff,
+  description: () => ({
+    format: '/emotional_damage_off',
+    more: '<u>Требование:</u>\nОтветить на сообщение пользователя для разбана',
+  }),
+};
 
-export async function emotionalDamageOff(data: Update, reply: Reply) {
+async function emotionalDamageOff(data: Update, reply: Reply) {
   const message = data.message;
   if (!message) {
     return;

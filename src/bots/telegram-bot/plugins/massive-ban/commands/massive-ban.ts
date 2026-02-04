@@ -2,15 +2,22 @@
 import { appStore } from '~/core/app-store.ts';
 import type { Reply } from '~/core/telegram-api/bot-types/reply.ts';
 import type { CommandData } from '~/core/telegram-api/observers/commands.ts';
+import type { CommandsFactoryItem } from '~/bots/telegram-bot/commands/factory/types.ts';
 
-import { sendNegativeResult } from '../common.ts';
+import { sendNegativeResult } from '../../../common.ts';
+
+export const HelloKitty: CommandsFactoryItem = {
+  label: 'Массовый бан',
+  type: '/hello_kitty',
+  handle: helloKitty,
+};
 
 const kitty_say_hi =
   'CgACAgQAAyEFAASmv4DZAAIKt2kha4U9TtKUDJxdmMkGajiBJVdyAAI1BAACa1S9UxdCkiqjAUsKNgQ';
 const kitty_say_bye =
   'CgACAgQAAyEFAASmv4DZAAIKtmkhawIepM9LGC5GQIK3b3ayFveMAAKZAwACxkfcU0yUrdJwQDduNgQ';
 
-export async function helloKitty(data: CommandData, reply: Reply) {
+async function helloKitty(data: CommandData, reply: Reply) {
   const store = appStore;
   if (store.getAppStatus() === 'massive_ban') {
     return;
