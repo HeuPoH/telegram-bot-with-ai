@@ -14,7 +14,7 @@ import { applyAvatars } from './bots/telegram-bot/plugins/avatars/index.ts';
 import { applyEmotionalDamage } from './bots/telegram-bot/plugins/emotional-damage/index.ts';
 import { applyMassiveBan } from './bots/telegram-bot/plugins/massive-ban/index.ts';
 
-config({ path: '../.env' });
+config({ path: '.env.development' });
 
 // eslint-disable-next-line unicorn/prefer-top-level-await
 (async () => {

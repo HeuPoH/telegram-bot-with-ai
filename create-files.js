@@ -15,13 +15,13 @@ try {
   console.log('✅ Файл users.txt успешно создан');
   console.log('✅ Файл settings.json успешно создан');
 
-  const environmentPath = path.join(__dirname, '.env');
+  const environmentPath = path.join(__dirname, '.env.production');
   const distributionEnvironmentPath = path.join(__dirname, 'dist', '.env');
   if (existsSync(environmentPath)) {
     copyFileSync(environmentPath, distributionEnvironmentPath);
-    console.log('✅ Файл .env скопирован в dist');
+    console.log('✅ Файл .env.production скопирован в dist');
   } else {
-    console.log('⚠️  Файл .env не найден, создайте его вручную');
+    console.log('⚠️  Файл .env.production не найден, создайте его вручную');
   }
 } catch (error) {
   console.error(error);

@@ -13,7 +13,7 @@ export default defineConfig([
   {
     env: {
       node: true,
-      es2021: true
+      es2021: true,
     },
     files: ['**/*.{js,ts}'],
     ignores: ['**/*.js', 'dist/**/*', 'node_modules/**/*'],
